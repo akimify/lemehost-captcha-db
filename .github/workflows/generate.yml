@@ -6,8 +6,12 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -20,12 +24,12 @@ jobs:
       - name: Generate DB
         run: python generate_db.py
 
-      - name: Commit db.json
+      - name: Commit and push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add db.json
-          git commit -m "update captcha db" || echo "no changes"
+          git add db.json SpicyRice.ttf
+          git commit -m "update captcha db ($(date '+%Y-%m-%d %H:%M'))"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
