@@ -1,7 +1,7 @@
 name: Generate Captcha DB
 
 on:
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 jobs:
   generate:
@@ -19,9 +19,6 @@ jobs:
 
       - name: Generate DB
         run: python generate_db.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.DB_TOKEN }}
-          GITHUB_REPO: akimify/lemehost-captcha-db
 
       - name: Commit db.json
         run: |
@@ -30,3 +27,5 @@ jobs:
           git add db.json
           git commit -m "update captcha db" || echo "no changes"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
